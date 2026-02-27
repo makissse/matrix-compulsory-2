@@ -28,6 +28,7 @@ public:
     Matrix transpose();
     double determinant();
     Matrix inverse();
+    Vector3D multiply(Vector3D v);
     Vector3D solve(Vector3D b);
 
     //  --- Constants --- 

@@ -155,6 +155,26 @@ Matrix Matrix::inverse()
 	return result;
 }
 
+
+Vector3D Matrix::multiply(Vector3D v)
+{
+	// Check if matrix is 3x3
+	if (m != 3 || n != 3) {
+		std::cout << "Matrix must be 3x3 to multiply with Vector3D" << std::endl;
+		return Vector3D();
+	}
+
+	Vector3D result;
+
+	// Matrix-vector multiplication
+	result.x = A[0][0] * v.x + A[0][1] * v.y + A[0][2] * v.z;
+	result.y = A[1][0] * v.x + A[1][1] * v.y + A[1][2] * v.z;
+	result.z = A[2][0] * v.x + A[2][1] * v.y + A[2][2] * v.z;
+
+	return result;
+}
+
+
 Vector3D Matrix::solve(Vector3D b)
 {
 	// Check matrix size
@@ -163,15 +183,13 @@ Vector3D Matrix::solve(Vector3D b)
 		return Vector3D();
 	}
 
-	// Compute inverse
+	// Calculate inverse matrix
 	Matrix invA = inverse();
 
-	// Multiply inverse by vector b manually, внутри этой функции
-	Vector3D x;
-	x.x = invA.A[0][0] * b.x + invA.A[0][1] * b.y + invA.A[0][2] * b.z;
-	x.y = invA.A[1][0] * b.x + invA.A[1][1] * b.y + invA.A[1][2] * b.z;
-	x.z = invA.A[2][0] * b.x + invA.A[2][1] * b.y + invA.A[2][2] * b.z;
+	// Multiply inverse matrix by vector b
+	Vector3D x = invA.multiply(b);
 
+	// Return solution vector
 	return x;
 }
 

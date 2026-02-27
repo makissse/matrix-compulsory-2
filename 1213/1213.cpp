@@ -17,7 +17,8 @@ int main() {
         cout << "2 - Transpose matrix\n";
         cout << "3 - Determinant (3x3)\n";
         cout << "4 - Inverse (3x3)\n";
-        cout << "5 - Solve AX = B (3x3)\n";
+        cout << "5 - Matrix * Vector (3x3)\n";
+        cout << "6 - Solve AX = B\n";
         cout << "0 - Exit\n";
         cout << "Choose option: ";
         cin >> choice;
@@ -67,16 +68,28 @@ int main() {
             break;
         }
 
-        case 5: {
+        case 5: { // Matrix × Vector 
+            Matrix A(3, 3); A.read("A"); 
+            Vector3D v; v.read(); 
+
+            Vector3D result = A.multiply(v); 
+            cout << "Result = "; result.print();
+            break; 
+        }
+
+        case 6: {
+            // Solve linear system AX = B
+
             Matrix A(3, 3);
             A.read("A");
 
             Vector3D b;
             b.read();
 
+            // Solve system
             Vector3D x = A.solve(b);
 
-            std::cout << "Solution X = ";
+            cout << "Solution X = ";
             x.print();
 
             break;
