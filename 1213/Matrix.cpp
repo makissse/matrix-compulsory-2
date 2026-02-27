@@ -56,43 +56,6 @@ void Matrix::print(const std::string& name)
 	}
 }
 
-Matrix Matrix::multiplyExample(Matrix other)
-{
-	// Hardcoded example of a 2x2 matrix multiplication.
-
-	if (n != other.m)
-	{
-		std::cout << "Can't multiply because of size differences" << std::endl;
-		return Matrix();
-	}
-
-	Matrix result(m, other.n);
-
-	// Temp variables for current matrix
-	double a = A[0][0], b = A[0][1];
-	double c = A[1][0], d = A[1][1];
-	// Current matrix
-	// | a b |
-	// | c d |
-
-	// Temp variables for other matrix
-	double e = other.A[0][0], f = other.A[0][1];
-	double g = other.A[1][0], h = other.A[1][1];
-	// Other matrix
-	// | e f |
-	// | g h |
-
-	// Multiplication:
-	result.A[0][0] = a * e + b * g;
-	result.A[0][1] = a * f + b * h;
-	result.A[1][0] = c * e + d * g;
-	result.A[1][1] = c * f + d * h;
-	// | a b | * | e f | = | (a*e + b*g) (a*f + b*h) |
-	// | c d |	 | g h |   | (c*e + d*g) (c*f + d*h) |
-
-	return result;
-}
-
 Matrix Matrix::multiply(Matrix other)
 {
 	// Dynamic multiplication for all matrix sizes.
@@ -192,22 +155,24 @@ Matrix Matrix::inverse()
 	return result;
 }
 
-Vector3D Matrix::multiply(Vector3D v)
+Vector3D Matrix::solve(Vector3D b)
 {
-	// Check if matrix is 3x3
+	// Check matrix size
 	if (m != 3 || n != 3) {
-		std::cout << "Matrix must be 3x3 to multiply with Vector3D" << std::endl;
+		std::cout << "System solving works only for 3x3 matrix." << std::endl;
 		return Vector3D();
 	}
 
-	Vector3D result;
+	// Compute inverse
+	Matrix invA = inverse();
 
-	// Matrix-vector multiplication
-	result.x = A[0][0] * v.x + A[0][1] * v.y + A[0][2] * v.z;
-	result.y = A[1][0] * v.x + A[1][1] * v.y + A[1][2] * v.z;
-	result.z = A[2][0] * v.x + A[2][1] * v.y + A[2][2] * v.z;
+	// Multiply inverse by vector b manually, внутри этой функции
+	Vector3D x;
+	x.x = invA.A[0][0] * b.x + invA.A[0][1] * b.y + invA.A[0][2] * b.z;
+	x.y = invA.A[1][0] * b.x + invA.A[1][1] * b.y + invA.A[1][2] * b.z;
+	x.z = invA.A[2][0] * b.x + invA.A[2][1] * b.y + invA.A[2][2] * b.z;
 
-	return result;
+	return x;
 }
 
 
